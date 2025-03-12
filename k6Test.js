@@ -5,6 +5,46 @@ import {Trend} from 'k6/metrics';
 
 // Options - configure execution of tests
 
+export const options = {
+    scenarios: {
+      smoke_test: {
+        executor: 'constant_vus',
+        vus:3,
+        duration: '20s',
+        /* Smoke Test Scenario validates if script runs without errors*/
+      },
+      load_test: {
+        executor: 'constant_vus',
+        vus:20,
+        duration: '60s',
+        /* Smoke Test Scenario validates if script runs without errors*/
+      },
+      stress_test: {
+        executor: 'constant_vus',
+        vus:120,
+        duration: '60s',
+        /* Stress Test Scenario validates if script runs without errors*/
+      },
+      soak_test: {
+        executor: 'constant_vus',
+        vus:20,
+        duration: '5m',
+        /* Soak Test Scenario validates if script runs without errors*/
+      },
+      spike_test: {
+        executor: 'ramping-vus',
+        startVUs: 3,
+        stages: [
+            { target: 20, duration: '10s' }, 
+            { target: 200, duration: '0' }, 
+            { target: 200, duration: '60s' }, 
+          ],
+          /* Spike Test Scenario validates if script runs without errors*/
+      },
+
+    },
+  };
+
 //Define Custom Metrics
 
 let responseTime = new Trend('response_time');
