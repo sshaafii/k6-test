@@ -8,25 +8,25 @@ import {Trend} from 'k6/metrics';
 export const options = {
     scenarios: {
       smoke_test: {
-        executor: 'constant_vus',
+        executor: 'ramping_vus',
         vus:3,
         duration: '20s',
         /* Smoke Test Scenario validates if script runs without errors*/
       },
       load_test: {
-        executor: 'constant_vus',
+        executor: 'ramping_vus',
         vus:20,
         duration: '60s',
         /* Smoke Test Scenario validates if script runs without errors*/
       },
       stress_test: {
-        executor: 'constant_vus',
+        executor: 'ramping_vus',
         vus:120,
         duration: '60s',
         /* Stress Test Scenario validates if script runs without errors*/
       },
       soak_test: {
-        executor: 'constant_vus',
+        executor: 'ramping_vus',
         vus:20,
         duration: '5m',
         /* Soak Test Scenario validates if script runs without errors*/
