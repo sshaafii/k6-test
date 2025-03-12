@@ -1,8 +1,14 @@
 // Imports
 import http from 'k6/http';
 import { check, sleep } from 'k6';
+import {Trend} from 'k6/metrics';
 
 // Options - configure execution of tests
+
+//Define Custom Metrics
+
+let responseTime = new Trend('response_time');
+let responseTime1 = new Trend('response_time1');
 
 // Default function - test logic resides here
 export default function () {
@@ -11,9 +17,11 @@ export default function () {
     // First HTTP GET request
     const res = http.get(url);
 
+    responseTime.add(res.timings.duration);
+
     // Check if the first request was successful
     check(res, {
-        'status is 200': (r) => r.status === 200,
+        ' res status is 200': (r) => r.status === 200,
     });
 
     // Parse the response and extract crocodile IDs
@@ -37,9 +45,11 @@ export default function () {
     // Make another HTTP GET request with the selected ID
     const res2 = http.get(`${url}${selectedId}`);
 
+    responseTime1.add(res2.timings.duration);
+
     // Check if the second request was successful
     check(res2, {
-        'status is 200': (r) => r.status === 200,
+        'res 2 status is 200': (r) => r.status === 200,
     });
 
     sleep(1); // Optional sleep to simulate user wait time
